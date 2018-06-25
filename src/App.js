@@ -10,12 +10,12 @@ export default class App extends Component {
     this.state = {
       currentPane: SCHEDULE,
       values: {
-        SCHEDULE: '',
-        GOALS: '',
-        MOTIVATION: '',
-        HAPPINESS: '',
-        TODO: '',
-        REMARKS: '',
+        SCHEDULE: [],
+        GOALS: [],
+        MOTIVATION: [],
+        HAPPINESS: [],
+        TODO: [],
+        REMARKS: [],
       },
     };
   }

@@ -1,30 +1,12 @@
 import React from 'react';
 import {
-  TextInput,
   StyleSheet,
   View,
   TouchableOpacity,
   Text,
-  Platform,
 } from 'react-native';
 import * as types from '../types';
-
-const getExplaination = (type) => {
-  switch(type) {
-    case types.SCHEDULE:
-      return 'What\'s the plan for today?';
-    case types.GOALS:
-      return 'What do you want\'t achieve today?';
-    case types.MOTIVATION:
-      return 'What drives you today ?';
-    case types.HAPPINESS:
-      return 'What makes you happy today?';
-    case types.TODO:
-      return 'Things to check off!';
-    default:
-      return 'type something, if you wish!';
-  };
-};
+import List from './List';
 
 const Pane = ({
   type,
@@ -36,6 +18,9 @@ const Pane = ({
   BANDWIDTH,
 }) => {
   const { width, height } = style;
+  const isChecked = type === types.TODO;
+  const addNewText = 'Add New';
+  const newEntryText = 'type something';
   return (
     <View>
       {!isCurrent &&
@@ -92,15 +77,22 @@ const Pane = ({
           >{type}</Text>
           <TouchableOpacity
             style={styles.editorInput}
-            onPress={() => this.inputBox.focus()}
+            onPress={() => {
+              onChange(
+                isChecked ?
+                  [ ...value, { text: newEntryText, isChecked: false } ]
+                  :
+                  [ ...value, { text: newEntryText } ]
+              )
+            }}
+            
           >
-            <TextInput
-              onChangeText={onChange}
-              value={value}
-              multiline={true}
-              underlineColorAndroid={'#FFFFFF00'}
-              placeholder={getExplaination(type)}
-              ref={(inputBox) => {this.inputBox = inputBox;}}
+            <List
+              items={value}
+              onChange={onChange}
+              isChecked={isChecked}
+              addNewText={addNewText}
+              newEntryText={newEntryText}
             />
           </TouchableOpacity>
         </View>
