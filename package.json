@@ -5,7 +5,10 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "wsl:run-android": "cd android && cmd.exe /c gradlew.bat installDebug"
+    "wsl:run-android": "cd android && cmd.exe /c gradlew.bat installDebug",
+    "eslint": "./node_modules/.bin/eslint ./src --ext js,jsx",
+    "eslint:fix": "./node_modules/.bin/eslint --fix ./src --ext js,jsx",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "react": "16.3.1",
