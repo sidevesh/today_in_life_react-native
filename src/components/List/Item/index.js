@@ -8,7 +8,7 @@ const Item = ({ entry, onChange, onDelete }) =>
       text={entry.text}
       onEdit={text => onChange({ ...entry, text })}
       onCheck={() => onChange({ ...entry, isChecked: true })}
-      onCheck={() => onChange({ ...entry, isChecked: false })}
+      onUncheck={() => onChange({ ...entry, isChecked: false })}
       onDelete={onDelete}
     />
     :
