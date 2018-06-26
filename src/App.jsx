@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
+import { StatusBar, View } from 'react-native';
 import Panels from './components/panels';
 import { SCHEDULE } from './types';
-import { StatusBar, View } from 'react-native';
 
 export default class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +25,7 @@ export default class App extends Component {
       <View style={{ flex: 1 }}>
         <StatusBar
           backgroundColor="rgba(0, 0, 0, 0)"
-          translucent={true}
+          translucent
           barStyle="dark-content"
         />
         <Panels
@@ -36,7 +35,6 @@ export default class App extends Component {
           onChange={(pane, value) => {
             this.setState({
               values: {
-                ...this.state.values,
                 [pane]: value,
               },
             });
@@ -45,5 +43,4 @@ export default class App extends Component {
       </View>
     );
   }
-
 }

@@ -12,13 +12,13 @@ const CheckItem = ({
   <View>
     <Button
       title={isChecked ? 'X' : 'O'}
-      onPress={() => isChecked ? onUncheck() : onCheck()}
+      onPress={() => (isChecked ? onUncheck() : onCheck())}
     />
     <TextInput
       onChangeText={onEdit}
       value={text}
       multiline={false}
-      underlineColorAndroid={'#FFFFFF00'}
+      underlineColorAndroid="#FFFFFF00"
     />
     <Button
       title="X"
@@ -26,3 +26,5 @@ const CheckItem = ({
     />
   </View>
 );
+
+export default CheckItem;

@@ -1,5 +1,7 @@
+import * as types from './types';
+
 const getExplaination = (type) => {
-  switch(type) {
+  switch (type) {
     case types.SCHEDULE:
       return 'What\'s the plan for today?';
     case types.GOALS:
@@ -12,7 +14,7 @@ const getExplaination = (type) => {
       return 'Things to check off!';
     default:
       return 'type something, if you wish!';
-  };
+  }
 };
 
 export default getExplaination;
