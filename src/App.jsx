@@ -33,11 +33,12 @@ export default class App extends Component {
           onPaneChange={pane => this.setState({ currentPane: pane })}
           values={values}
           onChange={(pane, value) => {
-            this.setState({
+            this.setState(prevState => ({
               values: {
+                ...prevState.values,
                 [pane]: value,
               },
-            });
+            }));
           }}
         />
       </View>

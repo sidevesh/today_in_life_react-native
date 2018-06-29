@@ -12,17 +12,16 @@ const List = ({
   <View>
     {items.map((item, index) => (
       <Item
+        key={index}
         entry={item}
         onChange={newItem => onChange(
           items
-            .map((itrItem, itrIndex) => (itrIndex === index ? newItem : item)),
-        )
-        }
+            .map((itrItem, itrIndex) => (itrIndex === index ? newItem : itrItem)),
+        )}
         onDelete={() => onChange(
           items
             .filter((itrItem, itrIndex) => itrIndex !== index),
-        )
-        }
+        )}
       />
     ))}
     <Button
