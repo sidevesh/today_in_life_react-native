@@ -37,6 +37,8 @@ const styles = StyleSheet.create({
   editorInput: {
     backgroundColor: '#eeeeee',
     flex: 1,
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
   },
 });
 
@@ -114,16 +116,7 @@ const Pane = ({
           >
             {type}
           </Text>
-          <TouchableOpacity
-            style={styles.editorInput}
-            onPress={() => {
-              onChange(
-                isChecked
-                  ? [...value, { text: newEntryText, isChecked: false }]
-                  : [...value, { text: newEntryText }],
-              );
-            }}
-          >
+          <View style={styles.editorInput}>
             <List
               items={value}
               onChange={onChange}
@@ -131,7 +124,7 @@ const Pane = ({
               addNewText={addNewText}
               newEntryText={newEntryText}
             />
-          </TouchableOpacity>
+          </View>
         </View>
         )
       }
