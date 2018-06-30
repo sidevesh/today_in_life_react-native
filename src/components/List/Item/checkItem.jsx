@@ -2,18 +2,29 @@ import React from 'react';
 import {
   View,
   TextInput,
-  Button,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'stretch',
+    alignItems: 'center',
   },
   itemText: {
     flex: 1,
+  },
+  checkIcon: {
+    fontSize: 20,
+    paddingRight: 5,
+    paddingLeft: 12,
+  },
+  deleteIcon: {
+    fontSize: 20,
+    paddingRight: 12,
+    paddingLeft: 12,
   },
 });
 
@@ -26,10 +37,14 @@ const CheckItem = ({
   onUncheck,
 }) => (
   <View style={styles.item}>
-    <Button
-      title={isChecked ? 'X' : 'O'}
+    <TouchableOpacity
       onPress={() => (isChecked ? onUncheck() : onCheck())}
-    />
+    >
+      <Icon
+        name={isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'}
+        style={styles.deleteIcon}
+      />
+    </TouchableOpacity>
     <TextInput
       style={styles.itemText}
       onChangeText={onEdit}
@@ -37,10 +52,14 @@ const CheckItem = ({
       multiline={false}
       underlineColorAndroid="#FFFFFF00"
     />
-    <Button
-      title="X"
+    <TouchableOpacity
       onPress={onDelete}
-    />
+    >
+      <Icon
+        name="close-circle"
+        style={styles.deleteIcon}
+      />
+    </TouchableOpacity>
   </View>
 );
 

@@ -15,7 +15,7 @@ const babelLoaderConfiguration = {
   include: [
     path.resolve(appDirectory, 'index.web.js'),
     path.resolve(appDirectory, 'src'),
-    path.resolve(appDirectory, 'node_modules/react-native-uncompiled'),
+    path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
   ],
   use: {
     loader: 'babel-loader',
@@ -33,11 +33,22 @@ const babelLoaderConfiguration = {
 const imageLoaderConfiguration = {
   test: /\.(gif|jpe?g|png|svg)$/,
   use: {
+    loader: 'file-loader',
+    options: {
+      name: '[name].[ext]',
+    },
+  },
+};
+
+const iconLoaderConfiguration = {
+  test: /\.ttf$/,
+  use: {
     loader: 'url-loader',
     options: {
       name: '[name].[ext]',
     },
   },
+  include: path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
 };
 
 module.exports = {
@@ -60,6 +71,7 @@ module.exports = {
     rules: [
       babelLoaderConfiguration,
       imageLoaderConfiguration,
+      iconLoaderConfiguration,
     ],
   },
 

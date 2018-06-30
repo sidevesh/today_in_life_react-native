@@ -2,27 +2,38 @@ import React from 'react';
 import {
   View,
   TextInput,
-  Button,
+  TouchableOpacity,
   StyleSheet,
-  Text,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'stretch',
+    alignItems: 'center',
   },
   itemText: {
     flex: 1,
+  },
+  bulletIcon: {
+    fontSize: 20,
+    paddingRight: 5,
+    paddingLeft: 12,
+  },
+  deleteIcon: {
+    fontSize: 20,
+    paddingRight: 12,
+    paddingLeft: 12,
   },
 });
 
 const BulletItem = ({ text, onEdit, onDelete }) => (
   <View style={styles.item}>
-    <Text>
-      O
-    </Text>
+    <Icon
+      name="asterisk"
+      style={styles.bulletIcon}
+    />
     <TextInput
       style={styles.itemText}
       onChangeText={onEdit}
@@ -30,10 +41,15 @@ const BulletItem = ({ text, onEdit, onDelete }) => (
       multiline={false}
       underlineColorAndroid="#FFFFFF00"
     />
-    <Button
-      title="X"
+    <TouchableOpacity
       onPress={onDelete}
-    />
+    >
+      <Icon
+        name="close-circle"
+        style={styles.deleteIcon}
+      />
+    </TouchableOpacity>
+
   </View>
 );
 
