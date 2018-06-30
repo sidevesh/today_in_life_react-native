@@ -8,20 +8,22 @@ AppRegistry.runApplication('TodayInLife', {
   rootTag: document.getElementById('root'),
 });
 
-// Generate required css
-const iconFontStyles = `@font-face {
-  src: url(${iconFont});
-  font-family: MaterialCommunityIcons;
-}`;
+['MaterialCommunityIcons', 'MaterialIcons'].forEach((fontEntry) => {
+  // Generate required css
+  const iconFontStyles = `@font-face {
+    src: url(${iconFont});
+    font-family: ${fontEntry};
+  }`;
 
-// Create stylesheet
-const style = document.createElement('style');
-style.type = 'text/css';
-if (style.styleSheet) {
-  style.styleSheet.cssText = iconFontStyles;
-} else {
-  style.appendChild(document.createTextNode(iconFontStyles));
-}
+  // Create stylesheet
+  const style = document.createElement('style');
+  style.type = 'text/css';
+  if (style.styleSheet) {
+    style.styleSheet.cssText = iconFontStyles;
+  } else {
+    style.appendChild(document.createTextNode(iconFontStyles));
+  }
 
-// Inject stylesheet
-document.head.appendChild(style);
+  // Inject stylesheet
+  document.head.appendChild(style);
+});
