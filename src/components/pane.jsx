@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   pane: {
     borderColor: '#e0e0e0',
     borderWidth: 1,
+    borderStyle: 'dashed',
   },
   band: {
     flexDirection: 'column',
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     textAlign: 'center',
+    fontFamily: 'Times New Roman',
   },
   editorHeading: {
     marginTop: 10,
