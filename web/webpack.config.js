@@ -16,6 +16,7 @@ const babelLoaderConfiguration = {
     path.resolve(appDirectory, 'index.web.js'),
     path.resolve(appDirectory, 'src'),
     path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
+    path.resolve(appDirectory, 'node_modules/react-native-calendar-strip'),
   ],
   use: {
     loader: 'babel-loader',

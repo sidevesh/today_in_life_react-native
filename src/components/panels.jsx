@@ -126,17 +126,19 @@ const TodoPane = ({
 export default class Panels extends Component {
   constructor(props) {
     super(props);
+    const { topOffset } = props;
     this.state = {
       width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
+      height: Dimensions.get('window').height - topOffset,
     };
   }
 
   componentDidMount() {
+    const { topOffset } = this.props;
     Dimensions.addEventListener('change', () => {
       this.setState({
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        height: Dimensions.get('window').height - topOffset,
       });
     });
   }
