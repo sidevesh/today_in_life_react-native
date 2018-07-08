@@ -20,7 +20,8 @@
     "react-native": "0.55.4",
     "react-native-calendar-strip": "^1.3.3",
     "react-native-vector-icons": "^4.6.0",
-    "react-native-web": "^0.8.6"
+    "react-native-web": "^0.8.6",
+    "realm": "^2.12.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.5",
