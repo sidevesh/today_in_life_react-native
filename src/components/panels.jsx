@@ -34,7 +34,9 @@ const SchedulePane = ({
   values,
   currentPane,
   onPaneChange,
-  onChange,
+  onAdd,
+  onEdit,
+  onDelete,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -42,7 +44,9 @@ const SchedulePane = ({
     type={types.SCHEDULE}
     value={values[types.SCHEDULE]}
     onPress={() => onPaneChange(types.SCHEDULE)}
-    onChange={value => onChange(types.SCHEDULE, value)}
+    onAdd={onAdd}
+    onEdit={onEdit}
+    onDelete={onDelete}
     isCurrent={currentPane === types.SCHEDULE}
   />
 );
@@ -53,7 +57,9 @@ const GoalsPane = ({
   values,
   currentPane,
   onPaneChange,
-  onChange,
+  onAdd,
+  onEdit,
+  onDelete,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -61,7 +67,9 @@ const GoalsPane = ({
     type={types.GOALS}
     value={values[types.GOALS]}
     onPress={() => onPaneChange(types.GOALS)}
-    onChange={value => onChange(types.GOALS, value)}
+    onAdd={onAdd}
+    onEdit={onEdit}
+    onDelete={onDelete}
     isCurrent={currentPane === types.GOALS}
   />
 );
@@ -72,7 +80,9 @@ const MotivationPane = ({
   values,
   currentPane,
   onPaneChange,
-  onChange,
+  onAdd,
+  onEdit,
+  onDelete,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -80,7 +90,9 @@ const MotivationPane = ({
     type={types.MOTIVATION}
     value={values[types.MOTIVATION]}
     onPress={() => onPaneChange(types.MOTIVATION)}
-    onChange={value => onChange(types.MOTIVATION, value)}
+    onAdd={onAdd}
+    onEdit={onEdit}
+    onDelete={onDelete}
     isCurrent={currentPane === types.MOTIVATION}
   />
 );
@@ -91,7 +103,9 @@ const HappinessPane = ({
   values,
   currentPane,
   onPaneChange,
-  onChange,
+  onAdd,
+  onEdit,
+  onDelete,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -99,7 +113,9 @@ const HappinessPane = ({
     type={types.HAPPINESS}
     value={values[types.HAPPINESS]}
     onPress={() => onPaneChange(types.HAPPINESS)}
-    onChange={value => onChange(types.HAPPINESS, value)}
+    onAdd={onAdd}
+    onEdit={onEdit}
+    onDelete={onDelete}
     isCurrent={currentPane === types.HAPPINESS}
   />
 );
@@ -110,7 +126,10 @@ const TodoPane = ({
   values,
   currentPane,
   onPaneChange,
-  onChange,
+  onAdd,
+  onEdit,
+  onDelete,
+  onCheckedToggle,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -118,7 +137,10 @@ const TodoPane = ({
     type={types.TODO}
     value={values[types.TODO]}
     onPress={() => onPaneChange(types.TODO)}
-    onChange={value => onChange(types.TODO, value)}
+    onAdd={onAdd}
+    onEdit={onEdit}
+    onDelete={onDelete}
+    onCheckedToggle={onCheckedToggle}
     isCurrent={currentPane === types.TODO}
   />
 );
@@ -148,7 +170,10 @@ export default class Panels extends Component {
       currentPane,
       onPaneChange,
       values,
-      onChange,
+      onAdd,
+      onEdit,
+      onDelete,
+      onCheckedToggle,
     } = this.props;
     const { width, height } = this.state;
     const BANDWIDTH = Math.min(
@@ -180,7 +205,9 @@ export default class Panels extends Component {
             BANDWIDTH={BANDWIDTH}
             currentPane={currentPane}
             onPaneChange={onPaneChange}
-            onChange={onChange}
+            onAdd={onAdd}
+            onEdit={onEdit}
+            onDelete={onDelete}
             values={values}
             style={{
               height: !isTopRowPanesActive
@@ -205,7 +232,9 @@ export default class Panels extends Component {
               BANDWIDTH={BANDWIDTH}
               currentPane={currentPane}
               onPaneChange={onPaneChange}
-              onChange={onChange}
+              onAdd={onAdd}
+              onEdit={onEdit}
+              onDelete={onDelete}
               values={values}
               style={{
                 height: currentPane !== types.GOALS // eslint-disable-line no-nested-ternary
@@ -222,7 +251,9 @@ export default class Panels extends Component {
               BANDWIDTH={BANDWIDTH}
               currentPane={currentPane}
               onPaneChange={onPaneChange}
-              onChange={onChange}
+              onAdd={onAdd}
+              onEdit={onEdit}
+              onDelete={onDelete}
               values={values}
               style={{
                 height: currentPane !== types.MOTIVATION // eslint-disable-line no-nested-ternary
@@ -251,7 +282,10 @@ export default class Panels extends Component {
             BANDWIDTH={BANDWIDTH}
             currentPane={currentPane}
             onPaneChange={onPaneChange}
-            onChange={onChange}
+            onAdd={onAdd}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            onCheckedToggle={onCheckedToggle}
             values={values}
             style={{
               height: isTopRowPanesActive
@@ -266,7 +300,9 @@ export default class Panels extends Component {
             BANDWIDTH={BANDWIDTH}
             currentPane={currentPane}
             onPaneChange={onPaneChange}
-            onChange={onChange}
+            onAdd={onAdd}
+            onEdit={onEdit}
+            onDelete={onDelete}
             values={values}
             style={{
               height: isTopRowPanesActive

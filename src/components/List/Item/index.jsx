@@ -2,21 +2,26 @@ import React from 'react';
 import CheckItem from './checkItem';
 import BulletItem from './bulletItem';
 
-const Item = ({ entry, onChange, onDelete }) => (entry.isChecked !== undefined
+const Item = ({
+  entry,
+  onEdit,
+  onDelete,
+  onCheckedToggle,
+}) => (entry.isChecked !== undefined
   ? (
     <CheckItem
       isChecked={entry.isChecked}
       text={entry.text}
-      onEdit={text => onChange({ ...entry, text })}
-      onCheck={() => onChange({ ...entry, isChecked: true })}
-      onUncheck={() => onChange({ ...entry, isChecked: false })}
+      onEdit={text => onEdit(text)}
+      onCheck={onCheckedToggle}
+      onUncheck={onCheckedToggle}
       onDelete={onDelete}
     />
   )
   : (
     <BulletItem
       text={entry.text}
-      onEdit={text => onChange({ ...entry, text })}
+      onEdit={text => onEdit(text)}
       onDelete={onDelete}
     />
   ));

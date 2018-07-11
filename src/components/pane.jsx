@@ -47,16 +47,17 @@ const styles = StyleSheet.create({
 const Pane = ({
   type,
   value,
-  onChange,
   onPress,
   style,
   isCurrent,
   BANDWIDTH,
+  onAdd,
+  onEdit,
+  onDelete,
+  onCheckedToggle,
 }) => {
   const { width, height } = style;
-  const isChecked = type === types.TODO;
   const addNewText = 'Add New';
-  const newEntryText = 'type something';
   return (
     <View>
       {!isCurrent
@@ -121,10 +122,11 @@ const Pane = ({
           <View style={styles.editorInput}>
             <List
               items={value}
-              onChange={onChange}
-              isChecked={isChecked}
               addNewText={addNewText}
-              newEntryText={newEntryText}
+              onAdd={() => onAdd(type)}
+              onEdit={(id, text) => onEdit(type, id, text)}
+              onDelete={id => onDelete(type, id)}
+              onCheckedToggle={onCheckedToggle}
             />
           </View>
         </View>

@@ -35,33 +35,24 @@ const styles = StyleSheet.create({
 
 const List = ({
   items,
-  onChange,
-  isChecked,
   addNewText = 'Add New',
-  newEntryText = 'type something',
+  onAdd,
+  onEdit,
+  onDelete,
+  onCheckedToggle,
 }) => (
   <View style={{ flex: 1, alignItems: 'stretch' }}>
     {items.map((item, index) => (
       <Item
         key={index}
         entry={item}
-        onChange={newItem => onChange(
-          items
-            .map((itrItem, itrIndex) => (itrIndex === index ? newItem : itrItem)),
-        )}
-        onDelete={() => onChange(
-          items
-            .filter((itrItem, itrIndex) => itrIndex !== index),
-        )}
+        onEdit={text => onEdit(item.id, text)}
+        onCheckedToggle={() => onCheckedToggle(item.id)}
+        onDelete={() => onDelete(item.id)}
       />
     ))}
     <TouchableOpacity
-      onPress={() => onChange(
-        isChecked
-          ? [...items, { text: newEntryText, isChecked: false }]
-          : [...items, { text: newEntryText }],
-      )
-      }
+      onPress={() => onAdd()}
       style={styles.addNewButton}
     >
       <View style={styles.addNewButtonItem}>

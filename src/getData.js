@@ -1,4 +1,5 @@
 import Realm from 'realm';
+import * as types from './types';
 
 const itemProperties = {
   id: { type: 'int' },
@@ -25,7 +26,7 @@ const CheckItem = {
   },
 };
 
-export const getItems = (type, date = new Date()) => new Promise((resolve, reject) => {
+const getItemsByType = (type, date) => new Promise((resolve, reject) => {
   Realm.open({ schema: [BulletItem, CheckItem] })
     .then(realm => resolve(
       [
@@ -36,6 +37,21 @@ export const getItems = (type, date = new Date()) => new Promise((resolve, rejec
       ]
         .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)),
     ))
+    .catch(err => reject(err));
+});
+
+export const getItems = (date = new Date()) => new Promise((resolve, reject) => {
+  Promise.all(
+    Object.values(types)
+      .map(type => getItemsByType(type, date)),
+  )
+    .then((itemsByTypes) => {
+      const typesToItems = {};
+      itemsByTypes.forEach((itemsByType, index) => {
+        typesToItems[Object.values(types)[index]] = itemsByType;
+      });
+      resolve(typesToItems);
+    })
     .catch(err => reject(err));
 });
 
