@@ -35,31 +35,46 @@ const CheckItem = ({
   isChecked,
   onCheck,
   onUncheck,
+  isEditable,
 }) => (
   <View style={styles.item}>
-    <TouchableOpacity
-      onPress={() => (isChecked ? onUncheck() : onCheck())}
-    >
-      <Icon
-        name={isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'}
-        style={styles.deleteIcon}
-      />
-    </TouchableOpacity>
+    {isEditable && (
+      <TouchableOpacity
+        onPress={() => (isChecked ? onUncheck() : onCheck())}
+      >
+        <Icon
+          name={isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'}
+          style={styles.deleteIcon}
+        />
+      </TouchableOpacity>
+    )}
     <TextInput
-      style={styles.itemText}
+      style={isChecked
+        ? [
+          styles.itemText,
+          {
+            textDecorationLine: 'line-through',
+            textDecorationStyle: 'solid',
+          },
+        ]
+        : styles.itemText
+      }
       onChangeText={onEdit}
       value={text}
       multiline={false}
       underlineColorAndroid="#FFFFFF00"
+      editable={isEditable}
     />
-    <TouchableOpacity
-      onPress={onDelete}
-    >
-      <Icon
-        name="close-circle"
-        style={styles.deleteIcon}
-      />
-    </TouchableOpacity>
+    {isEditable && (
+      <TouchableOpacity
+        onPress={onDelete}
+      >
+        <Icon
+          name="close-circle"
+          style={styles.deleteIcon}
+        />
+      </TouchableOpacity>
+    )}
   </View>
 );
 

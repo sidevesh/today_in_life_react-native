@@ -37,6 +37,7 @@ const SchedulePane = ({
   onAdd,
   onEdit,
   onDelete,
+  isEditable,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -48,6 +49,7 @@ const SchedulePane = ({
     onEdit={onEdit}
     onDelete={onDelete}
     isCurrent={currentPane === types.SCHEDULE}
+    isEditable={isEditable}
   />
 );
 
@@ -60,6 +62,7 @@ const GoalsPane = ({
   onAdd,
   onEdit,
   onDelete,
+  isEditable,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -71,6 +74,7 @@ const GoalsPane = ({
     onEdit={onEdit}
     onDelete={onDelete}
     isCurrent={currentPane === types.GOALS}
+    isEditable={isEditable}
   />
 );
 
@@ -83,6 +87,7 @@ const MotivationPane = ({
   onAdd,
   onEdit,
   onDelete,
+  isEditable,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -94,6 +99,7 @@ const MotivationPane = ({
     onEdit={onEdit}
     onDelete={onDelete}
     isCurrent={currentPane === types.MOTIVATION}
+    isEditable={isEditable}
   />
 );
 
@@ -106,6 +112,7 @@ const HappinessPane = ({
   onAdd,
   onEdit,
   onDelete,
+  isEditable,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -117,6 +124,7 @@ const HappinessPane = ({
     onEdit={onEdit}
     onDelete={onDelete}
     isCurrent={currentPane === types.HAPPINESS}
+    isEditable={isEditable}
   />
 );
 
@@ -130,6 +138,7 @@ const TodoPane = ({
   onEdit,
   onDelete,
   onCheckedToggle,
+  isEditable,
 }) => (
   <Pane
     BANDWIDTH={BANDWIDTH}
@@ -142,6 +151,7 @@ const TodoPane = ({
     onDelete={onDelete}
     onCheckedToggle={onCheckedToggle}
     isCurrent={currentPane === types.TODO}
+    isEditable={isEditable}
   />
 );
 
@@ -174,6 +184,7 @@ export default class Panels extends Component {
       onEdit,
       onDelete,
       onCheckedToggle,
+      isEditable,
     } = this.props;
     const { width, height } = this.state;
     const BANDWIDTH = Math.min(
@@ -209,6 +220,7 @@ export default class Panels extends Component {
             onEdit={onEdit}
             onDelete={onDelete}
             values={values}
+            isEditable={isEditable}
             style={{
               height: !isTopRowPanesActive
                 ? (BANDWIDTH * 2)
@@ -236,6 +248,7 @@ export default class Panels extends Component {
               onEdit={onEdit}
               onDelete={onDelete}
               values={values}
+              isEditable={isEditable}
               style={{
                 height: currentPane !== types.GOALS // eslint-disable-line no-nested-ternary
                   ? currentPane === types.SCHEDULE
@@ -255,6 +268,7 @@ export default class Panels extends Component {
               onEdit={onEdit}
               onDelete={onDelete}
               values={values}
+              isEditable={isEditable}
               style={{
                 height: currentPane !== types.MOTIVATION // eslint-disable-line no-nested-ternary
                   ? currentPane === types.SCHEDULE
@@ -287,6 +301,7 @@ export default class Panels extends Component {
             onDelete={onDelete}
             onCheckedToggle={onCheckedToggle}
             values={values}
+            isEditable={isEditable}
             style={{
               height: isTopRowPanesActive
                 ? BANDWIDTH
@@ -304,6 +319,7 @@ export default class Panels extends Component {
             onEdit={onEdit}
             onDelete={onDelete}
             values={values}
+            isEditable={isEditable}
             style={{
               height: isTopRowPanesActive
                 ? BANDWIDTH

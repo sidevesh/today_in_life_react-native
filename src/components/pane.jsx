@@ -55,6 +55,7 @@ const Pane = ({
   onEdit,
   onDelete,
   onCheckedToggle,
+  isEditable,
 }) => {
   const { width, height } = style;
   const addNewText = 'Add New';
@@ -127,6 +128,7 @@ const Pane = ({
               onEdit={(id, text) => onEdit(type, id, text)}
               onDelete={id => onDelete(type, id)}
               onCheckedToggle={onCheckedToggle}
+              isEditable={isEditable}
             />
           </View>
         </View>

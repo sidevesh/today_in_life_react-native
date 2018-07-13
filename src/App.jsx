@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import {
   StatusBar, View, Platform,
 } from 'react-native';
-import moment from 'moment';
 import CalendarStrip from 'react-native-calendar-strip';
 import Panels from './components/panels';
 import { SCHEDULE, TODO } from './types';
 import {
+  realm,
   getItems,
   addBulletItem,
   addCheckItem,
@@ -15,14 +15,25 @@ import {
   toggleCheckItem,
   deleteBulletItem,
   deleteCheckItem,
+  getEntriedDatesForWeekStart,
 } from './getData';
+
+const isToday = (date) => {
+  const inputDay = new Date(date);
+  const inputStartOfDay = inputDay.setHours(0, 0, 0, 0);
+  const today = new Date();
+  const todayStartOfDay = today.setHours(0, 0, 0, 0);
+  return inputStartOfDay === todayStartOfDay;
+};
 
 export default class App extends Component {
   constructor(props) {
     super(props);
+    const today = new Date();
     this.state = {
-      currentDate: moment(),
+      currentDate: today,
       currentPane: SCHEDULE,
+      whitelistedDatesForCurrentWeek: getEntriedDatesForWeekStart(today),
       values: {
         SCHEDULE: [],
         GOALS: [],
@@ -35,8 +46,8 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    getItems()
-      .then(values => this.setState({ values }));
+    this.setState({ values: getItems() });
+    realm.addListener('change', () => this.setState({ values: getItems() }));
   }
 
   render() {
@@ -44,6 +55,7 @@ export default class App extends Component {
       currentPane,
       values,
       currentDate,
+      whitelistedDatesForCurrentWeek,
     } = this.state;
     let statusbarOffset = Platform.OS === 'android' ? 24 : 20;
     statusbarOffset = Platform.OS === 'web' ? 0 : statusbarOffset;
@@ -57,22 +69,28 @@ export default class App extends Component {
         />
         <View style={{ height: statusbarOffset }} />
         <CalendarStrip
+          maxDate={new Date()}
+          datesWhitelist={whitelistedDatesForCurrentWeek}
+          onWeekChanged={week => this.setState({
+            whitelistedDatesForCurrentWeek: getEntriedDatesForWeekStart(new Date(week)),
+          })}
           selectedDate={currentDate}
           onDateSelected={(date) => {
-            this.setState({ currentDate: date });
-            getItems(date)
-              .then(newValues => this.setState({ values: newValues }));
+            this.setState({
+              currentDate: date.toDate(),
+              values: getItems(date.toDate()),
+            });
           }}
           calendarAnimation={{ type: 'sequence', duration: 100 }}
           calendarHeaderStyle={{ color: '#000000' }}
           dateNumberStyle={{ color: '#C0C0C0' }}
           dateNameStyle={{ color: '#C0C0C0' }}
-          weekendDateNumberStyle={{ color: '#DFDFDF' }}
-          weekendDateNameStyle={{ color: '#DFDFDF' }}
+          weekendDateNumberStyle={{ color: '#888888' }}
+          weekendDateNameStyle={{ color: '#888888' }}
           highlightDateNumberStyle={{ color: '#000000' }}
           highlightDateNameStyle={{ color: '#000000' }}
-          disabledDateNameStyle={{ color: '#DFDFDF' }}
-          disabledDateNumberStyle={{ color: '#DFDFDF' }}
+          disabledDateNameStyle={{ color: '#AAAAAA' }}
+          disabledDateNumberStyle={{ color: '#AAAAAA' }}
           innerStyle={[]}
           style={{ height: stripOffset }}
         />
@@ -91,6 +109,7 @@ export default class App extends Component {
             : deleteBulletItem(id)
           )}
           onCheckedToggle={id => toggleCheckItem(id)}
+          isEditable={isToday(currentDate)}
         />
       </View>
     );

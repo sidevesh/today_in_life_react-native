@@ -7,6 +7,7 @@ const Item = ({
   onEdit,
   onDelete,
   onCheckedToggle,
+  isEditable,
 }) => (entry.isChecked !== undefined
   ? (
     <CheckItem
@@ -16,6 +17,7 @@ const Item = ({
       onCheck={onCheckedToggle}
       onUncheck={onCheckedToggle}
       onDelete={onDelete}
+      isEditable={isEditable}
     />
   )
   : (
@@ -23,6 +25,7 @@ const Item = ({
       text={entry.text}
       onEdit={text => onEdit(text)}
       onDelete={onDelete}
+      isEditable={isEditable}
     />
   ));
 

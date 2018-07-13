@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const BulletItem = ({ text, onEdit, onDelete }) => (
+const BulletItem = ({
+  text, onEdit, onDelete, isEditable,
+}) => (
   <View style={styles.item}>
     <Icon
       name="asterisk"
@@ -40,16 +42,20 @@ const BulletItem = ({ text, onEdit, onDelete }) => (
       value={text}
       multiline={false}
       underlineColorAndroid="#FFFFFF00"
+      editable={isEditable}
     />
-    <TouchableOpacity
-      onPress={onDelete}
-    >
-      <Icon
-        name="close-circle"
-        style={styles.deleteIcon}
-      />
-    </TouchableOpacity>
-
+    {isEditable
+      && (
+      <TouchableOpacity
+        onPress={onDelete}
+      >
+        <Icon
+          name="close-circle"
+          style={styles.deleteIcon}
+        />
+      </TouchableOpacity>
+      )
+    }
   </View>
 );
 

@@ -40,31 +40,35 @@ const List = ({
   onEdit,
   onDelete,
   onCheckedToggle,
+  isEditable,
 }) => (
   <View style={{ flex: 1, alignItems: 'stretch' }}>
-    {items.map((item, index) => (
+    {items.map(item => (
       <Item
-        key={index}
+        key={item.id}
         entry={item}
         onEdit={text => onEdit(item.id, text)}
         onCheckedToggle={() => onCheckedToggle(item.id)}
         onDelete={() => onDelete(item.id)}
+        isEditable={isEditable}
       />
     ))}
-    <TouchableOpacity
-      onPress={() => onAdd()}
-      style={styles.addNewButton}
-    >
-      <View style={styles.addNewButtonItem}>
-        <Icon
-          name="add"
-          style={styles.addIcon}
-        />
-        <Text style={styles.addText}>
-          {addNewText}
-        </Text>
-      </View>
-    </TouchableOpacity>
+    {isEditable && (
+      <TouchableOpacity
+        onPress={() => onAdd()}
+        style={styles.addNewButton}
+      >
+        <View style={styles.addNewButtonItem}>
+          <Icon
+            name="add"
+            style={styles.addIcon}
+          />
+          <Text style={styles.addText}>
+            {addNewText}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    )}
   </View>
 );
 
