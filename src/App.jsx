@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   StatusBar, View, Platform,
 } from 'react-native';
+import moment from 'moment';
 import CalendarStrip from 'react-native-calendar-strip';
 import Panels from './components/panels';
 import { SCHEDULE, TODO } from './types';
@@ -29,11 +30,14 @@ const isToday = (date) => {
 export default class App extends Component {
   constructor(props) {
     super(props);
-    const today = new Date();
+    const today = moment().startOf('day').toDate();
     this.state = {
       currentDate: today,
       currentPane: SCHEDULE,
-      whitelistedDatesForCurrentWeek: getEntriedDatesForWeekStart(today),
+      whitelistedDatesForCurrentWeek: [
+        today,
+        ...getEntriedDatesForWeekStart(today),
+      ],
       values: {
         SCHEDULE: [],
         GOALS: [],
@@ -72,7 +76,10 @@ export default class App extends Component {
           maxDate={new Date()}
           datesWhitelist={whitelistedDatesForCurrentWeek}
           onWeekChanged={week => this.setState({
-            whitelistedDatesForCurrentWeek: getEntriedDatesForWeekStart(new Date(week)),
+            whitelistedDatesForCurrentWeek: [
+              moment().startOf('day').toDate(),
+              ...getEntriedDatesForWeekStart(new Date(week)),
+            ],
           })}
           selectedDate={currentDate}
           onDateSelected={(date) => {
