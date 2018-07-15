@@ -3,8 +3,9 @@ import {
   StatusBar, View, Platform,
 } from 'react-native';
 import moment from 'moment';
-import CalendarStrip from 'react-native-calendar-strip';
+import { CalendarList } from 'react-native-calendars';
 import Panels from './components/panels';
+import NavBar from './components/navbar';
 import { SCHEDULE, TODO } from './types';
 import {
   realm,
@@ -16,8 +17,47 @@ import {
   toggleCheckItem,
   deleteBulletItem,
   deleteCheckItem,
-  getEntriedDatesForWeekStart,
+  getEntriedDatesFoMonths,
 } from './getData';
+
+const getDaysInMonth = (inpDate) => {
+  const month = inpDate.getMonth();
+  const year = inpDate.getFullYear();
+  const date = new Date(year, month, 1);
+  const result = [];
+  while (date.getMonth() === month) {
+    result.push(new Date(date));
+    date.setDate(date.getDate() + 1);
+  }
+  return result;
+};
+
+const fillDisabledRestDates = (markedDates, months) => {
+  const presentDates = Object.keys(markedDates);
+  const allDates = months
+    .map(getDaysInMonth)
+    .reduce((a, b) => a.concat(b))
+    .map(date => moment(date).format('YYYY-MM-DD'));
+  const returnMarkedDates = { ...markedDates };
+  allDates.forEach((date) => {
+    if (presentDates.includes(date)) return;
+    returnMarkedDates[date] = { disabled: true };
+  });
+  return returnMarkedDates;
+};
+
+const getMarkedDatesWithToday = (dates) => {
+  const markedDates = {};
+  dates.forEach((date) => {
+    markedDates[moment(date).format('YYYY-MM-DD')] = { selected: true };
+  });
+  if (!Object.keys(markedDates).includes(moment().format('YYYY-MM-DD'))) {
+    markedDates[moment().format('YYYY-MM-DD')] = { selected: true, marked: true };
+  }
+  return markedDates;
+};
+
+const formatToDate = object => moment(object.dateString, 'YYYY-MM-DD').toDate();
 
 const isToday = (date) => {
   const inputDay = new Date(date);
@@ -32,12 +72,10 @@ export default class App extends Component {
     super(props);
     const today = moment().startOf('day').toDate();
     this.state = {
+      isExpanded: false,
       currentDate: today,
       currentPane: SCHEDULE,
-      whitelistedDatesForCurrentWeek: [
-        today,
-        ...getEntriedDatesForWeekStart(today),
-      ],
+      markedDates: {},
       values: {
         SCHEDULE: [],
         GOALS: [],
@@ -59,11 +97,12 @@ export default class App extends Component {
       currentPane,
       values,
       currentDate,
-      whitelistedDatesForCurrentWeek,
+      markedDates,
+      isExpanded,
     } = this.state;
     let statusbarOffset = Platform.OS === 'android' ? 24 : 20;
     statusbarOffset = Platform.OS === 'web' ? 0 : statusbarOffset;
-    const stripOffset = 80;
+    const navBarOffset = Platform.OS === 'android' ? 56 : 44;
     return (
       <View style={{ flex: 1 }}>
         <StatusBar
@@ -72,52 +111,56 @@ export default class App extends Component {
           barStyle="dark-content"
         />
         <View style={{ height: statusbarOffset }} />
-        <CalendarStrip
-          maxDate={new Date()}
-          datesWhitelist={whitelistedDatesForCurrentWeek}
-          onWeekChanged={week => this.setState({
-            whitelistedDatesForCurrentWeek: [
-              moment().startOf('day').toDate(),
-              ...getEntriedDatesForWeekStart(new Date(week)),
-            ],
-          })}
-          selectedDate={currentDate}
-          onDateSelected={(date) => {
-            this.setState({
-              currentDate: date.toDate(),
-              values: getItems(date.toDate()),
-            });
-          }}
-          calendarAnimation={{ type: 'sequence', duration: 100 }}
-          calendarHeaderStyle={{ color: '#000000' }}
-          dateNumberStyle={{ color: '#C0C0C0' }}
-          dateNameStyle={{ color: '#C0C0C0' }}
-          weekendDateNumberStyle={{ color: '#888888' }}
-          weekendDateNameStyle={{ color: '#888888' }}
-          highlightDateNumberStyle={{ color: '#000000' }}
-          highlightDateNameStyle={{ color: '#000000' }}
-          disabledDateNameStyle={{ color: '#AAAAAA' }}
-          disabledDateNumberStyle={{ color: '#AAAAAA' }}
-          innerStyle={[]}
-          style={{ height: stripOffset }}
-        />
-        <Panels
-          topOffset={statusbarOffset + stripOffset}
-          currentPane={currentPane}
-          onPaneChange={pane => this.setState({ currentPane: pane })}
-          values={values}
-          onAdd={type => (type === TODO ? addCheckItem(type) : addBulletItem(type))}
-          onEdit={(type, id, text) => (type === TODO
-            ? editCheckItem(id, text)
-            : editBulletItem(id, text)
+        <NavBar
+          title={moment(currentDate).format('dddd, D MMMM YYYY')}
+          isExpanded={isExpanded}
+          onExpand={() => this.setState({ isExpanded: true })}
+          onCollapse={() => this.setState({ isExpanded: false })}
+          renderExpandedContent={() => (
+            <CalendarList
+              maxDate={new Date()}
+              markedDates={markedDates}
+              onVisibleMonthsChange={months => this.setState({
+                markedDates:
+                fillDisabledRestDates(
+                  getMarkedDatesWithToday(
+                    getEntriedDatesFoMonths(
+                      months.map(formatToDate),
+                    ),
+                  ),
+                  months.map(formatToDate),
+                ),
+              })}
+              current={currentDate}
+              onDayPressed={(date) => {
+                const parsedDate = formatToDate(date);
+                this.setState({
+                  currentDate: parsedDate,
+                  values: getItems(parsedDate),
+                });
+              }}
+            />
           )}
-          onDelete={(type, id) => (type === TODO
-            ? deleteCheckItem(id)
-            : deleteBulletItem(id)
-          )}
-          onCheckedToggle={id => toggleCheckItem(id)}
-          isEditable={isToday(currentDate)}
         />
+        {!isExpanded && (
+          <Panels
+            topOffset={statusbarOffset + navBarOffset}
+            currentPane={currentPane}
+            onPaneChange={pane => this.setState({ currentPane: pane })}
+            values={values}
+            onAdd={type => (type === TODO ? addCheckItem(type) : addBulletItem(type))}
+            onEdit={(type, id, text) => (type === TODO
+              ? editCheckItem(id, text)
+              : editBulletItem(id, text)
+            )}
+            onDelete={(type, id) => (type === TODO
+              ? deleteCheckItem(id)
+              : deleteBulletItem(id)
+            )}
+            onCheckedToggle={id => toggleCheckItem(id)}
+            isEditable={isToday(currentDate)}
+          />
+        )}
       </View>
     );
   }

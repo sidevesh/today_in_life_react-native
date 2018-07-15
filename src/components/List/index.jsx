@@ -1,22 +1,15 @@
 import React from 'react';
 import {
-  View,
   TouchableOpacity,
   Text,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import Item from './Item';
 
 const styles = StyleSheet.create({
   addNewButton: {
-    flexGrow: 1,
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-  },
-  addNewButtonItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -42,7 +35,7 @@ const List = ({
   onCheckedToggle,
   isEditable,
 }) => (
-  <View style={{ flex: 1, alignItems: 'stretch' }}>
+  <ScrollView contentContainerStyle={{ alignItems: 'stretch' }}>
     {items.map(item => (
       <Item
         key={item.id}
@@ -58,18 +51,16 @@ const List = ({
         onPress={() => onAdd()}
         style={styles.addNewButton}
       >
-        <View style={styles.addNewButtonItem}>
-          <Icon
-            name="add"
-            style={styles.addIcon}
-          />
-          <Text style={styles.addText}>
-            {addNewText}
-          </Text>
-        </View>
+        <Icon
+          name="add"
+          style={styles.addIcon}
+        />
+        <Text style={styles.addText}>
+          {addNewText}
+        </Text>
       </TouchableOpacity>
     )}
-  </View>
+  </ScrollView>
 );
 
 export default List;

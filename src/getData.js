@@ -54,19 +54,23 @@ export const getItems = (date = new Date()) => {
   return typesToItems;
 };
 
-export const getEntriedDatesForWeekStart = (aDateInWeek) => {
-  const startOfWeek = moment(aDateInWeek).startOf('week').toDate();
-  const endOfWeek = moment(aDateInWeek).endOf('week').toDate();
+const getEntriedDatesForMonth = (aDateInMonth) => {
+  const startOfMonth = moment(aDateInMonth).startOf('month').toDate();
+  const endOfMonth = moment(aDateInMonth).endOf('month').toDate();
   return [
     ...realm.objects('BulletItem')
-      .filtered('createdAt > $0 AND createdAt <= $1 AND isDeleted == false', startOfWeek, endOfWeek),
+      .filtered('createdAt > $0 AND createdAt <= $1 AND isDeleted == false', startOfMonth, endOfMonth),
     ...realm.objects('CheckItem')
-      .filtered('createdAt > $0 AND createdAt <= $1 AND isDeleted == false', startOfWeek, endOfWeek),
+      .filtered('createdAt > $0 AND createdAt <= $1 AND isDeleted == false', startOfMonth, endOfMonth),
   ]
     .map(item => moment(item.createdAt).startOf('day').valueOf())
     .filter((v, i, a) => a.indexOf(v) === i)
     .map(timestamp => moment(timestamp).toDate());
 };
+
+export const getEntriedDatesFoMonths = months => months
+  .map(getEntriedDatesForMonth)
+  .reduce((a, b) => a.concat(b));
 
 export const addBulletItem = (type, text = '') => {
   const now = new Date();
